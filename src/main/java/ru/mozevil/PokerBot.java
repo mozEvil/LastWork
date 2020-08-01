@@ -45,17 +45,14 @@ public class PokerBot implements Runnable {
 
         // если настал ход hero.
         if (parser.isAction()) {
-            System.out.print("\n. ");
             // парсим стол
             Table table = parser.parseTable();
-            System.out.print(". ");
 
             // заворачиваем стол в обертку
             Environment env = new Environment(table);
 
             // принимаем решение, в соответсвии со стратегией
             Decision decision = strategy.makeDecision(env);
-            System.out.println("!");
 
             // показываем решение
             view.setEnvironment(env);

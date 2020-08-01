@@ -23,6 +23,7 @@ public class PanelBotSettings extends JPanel {
 
     private JButton btnStart;
     private JButton btnStop;
+    private JButton btnScan;
 
     public PanelBotSettings(PokerView view) {
         init();
@@ -65,6 +66,9 @@ public class PanelBotSettings extends JPanel {
         btnStop = new JButton("Stop");
         btnStop.addActionListener(e -> handleStop());
 
+        btnScan = new JButton("Scan");
+        btnScan.addActionListener(e -> handleScan());
+
         add(btnStart);
 
         layout.putConstraint(NORTH, btnStart, 25, NORTH, this);
@@ -79,7 +83,15 @@ public class PanelBotSettings extends JPanel {
         layout.putConstraint(EAST, btnStop, 85, WEST, btnStop); // weight
         layout.putConstraint(SOUTH, btnStop, 25, NORTH, btnStop); // height
 
+        add(btnScan);
+
+        layout.putConstraint(NORTH, btnScan, 50, NORTH, this);
+        layout.putConstraint(WEST, btnScan, 0, WEST, this);
+        layout.putConstraint(EAST, btnScan, 170, WEST, btnScan); // weight
+        layout.putConstraint(SOUTH, btnScan, 25, NORTH, btnScan); // height
+
         btnStart.setEnabled(!isStarted);
+        btnScan.setEnabled(!isStarted);
         btnStop.setEnabled(isStarted);
     }
 
@@ -97,8 +109,7 @@ public class PanelBotSettings extends JPanel {
         System.out.println("start");
 
         isStarted = true;
-        btnStart.setEnabled(!isStarted);
-        btnStop.setEnabled(isStarted);
+        updateBtnStatus();
     }
 
     public void handleStop() {
@@ -107,7 +118,21 @@ public class PanelBotSettings extends JPanel {
         System.out.println("stop");
 
         isStarted = false;
+        updateBtnStatus();
+    }
+
+    public void handleScan() {
+        pokerBot.setParser(new TableParser());
+        pokerBot.setStrategy(new SnG_45_simple());
+        pokerBot.setRobot(new RobotKey());
+        pokerBot.setAutoMove(false);
+
+        new Thread(pokerBot).start();
+    }
+
+    private void updateBtnStatus() {
         btnStart.setEnabled(!isStarted);
+        btnScan.setEnabled(!isStarted);
         btnStop.setEnabled(isStarted);
     }
 

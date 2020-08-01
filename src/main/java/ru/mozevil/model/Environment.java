@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 public class Environment {
 
     private Table table;
+    private Level lvl;
 
     public Environment(Table table) {
         this.table = table;
@@ -25,6 +26,10 @@ public class Environment {
 
     public void setTable(Table table) {
         this.table = table;
+    }
+
+    public void setLvl(Level lvl) {
+        this.lvl = lvl;
     }
 
     public Seat[] getSeats() {
@@ -45,6 +50,33 @@ public class Environment {
 
     public Card[] getTableCards() {
         return table.getTableCards();
+    }
+
+    public double getEffectiveBB() {
+
+        double blinds = 1.5;
+        double antes = 0;
+
+        if (lvl != null) {
+            antes = getTotalPlayersCount() * lvl.getAnte(getLvlBlinds());
+        }
+
+        return (blinds + antes) * 2 / 3;
+    }
+
+    /** размер стека в ББ с учетом анте*/
+    public double getRealHeroStackSize() {
+        return getHeroStackSize() / getEffectiveBB();
+    }
+
+    /** размер эффективного стека в ББ с учетом анте*/
+    public double getRealEffectiveStackSize() {
+        return getEffectiveStack_AtMomentHeroMove_for(getHero()) / getEffectiveBB();
+    }
+
+    /** размер эффективного стека цели в момент хода цели, в ББ с учетом анте*/
+    public double getRealEffectiveStackSizeForTarget(Player target) {
+        return getEffectiveStack_AtMomentTargetMove_for(target) / getEffectiveBB();
     }
 
     public Street getStreet() {

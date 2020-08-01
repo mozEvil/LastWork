@@ -78,31 +78,11 @@ public class SnG_45_simple implements PokerStrategy {
     private final Range range_BB_cc_vs_SB_BTN_push_7_5bb = new Range("44+, A8+, A7s+");
     private final Range range_BB_cc_vs_SB_BTN_push_5bb = new Range("22+, A2+, KT+, JTs++");
 
-    private double getEffectiveBB() {
-        double antes = env.getTotalPlayersCount() * lvl.getAnte(env.getLvlBlinds());
-        double blinds = 1.5;
-        return (blinds + antes) * 2 / 3;
-    }
-
-    /** размер стека в ББ с учетом анте*/
-    private double getRealHeroStackSize() {
-        return env.getHeroStackSize() / getEffectiveBB();
-    }
-
-    /** размер эффективного стека в ББ с учетом анте*/
-    private double getRealEffectiveStackSize() {
-        return env.getEffectiveStack_AtMomentHeroMove_for(env.getHero()) / getEffectiveBB();
-    }
-
-    /** размер эффективного стека цели в момент хода цели, в ББ с учетом анте*/
-    private double getRealEffectiveStackSizeForTarget(Player target) {
-        return env.getEffectiveStack_AtMomentTargetMove_for(target) / getEffectiveBB();
-    }
-
     @Override
     public Decision makeDecision(Environment env) {
 
         this.env = env;
+        env.setLvl(lvl);
 
         if (env.getStreet() == null) return DF.check_fold();
 
@@ -115,7 +95,7 @@ public class SnG_45_simple implements PokerStrategy {
 
     private Decision getPreflop() {
 
-        double realHeroStack = getRealHeroStackSize();
+        double realHeroStack = env.getRealHeroStackSize();
 
         // хедз-ап
         if (env.isHeadsUp()) {
@@ -148,7 +128,7 @@ public class SnG_45_simple implements PokerStrategy {
 
         Hand heroHand = env.getHeroHand();
         Position heroPos = env.getHeroPosition();
-        double effStack = getRealEffectiveStackSize();
+        double effStack = env.getRealEffectiveStackSize();
         boolean canPush = false;
 
         switch (heroPos) {
@@ -208,7 +188,7 @@ public class SnG_45_simple implements PokerStrategy {
     private Decision PE_BB_vs_Steal() {
 
         Hand heroHand = env.getHeroHand();
-        double effStack = getRealEffectiveStackSize();
+        double effStack = env.getRealEffectiveStackSize();
         double maxBet = env.getMaxBetSize();
 
         if (effStack > 15) {
@@ -324,7 +304,7 @@ public class SnG_45_simple implements PokerStrategy {
 
     private Decision PL_BB_vs_push() {
 
-        double realEffStackOfPusher = getRealEffectiveStackSizeForTarget(env.getOpenPusherWhenHeroOnBB());
+        double realEffStackOfPusher = env.getRealEffectiveStackSizeForTarget(env.getOpenPusherWhenHeroOnBB());
 
         if (realEffStackOfPusher <= 2) return DF.call();
 
@@ -413,7 +393,7 @@ public class SnG_45_simple implements PokerStrategy {
 
     private Decision PL_pushFold() {
 
-        double realHeroStack = getRealHeroStackSize();  // < 11 bb
+        double realHeroStack = env.getRealHeroStackSize();  // < 11 bb
 
         if (realHeroStack < 3) return DF.push();      // < 3 bb push any two
         if (realHeroStack < 5.5) return pushFold_5bb(); // 3 - 5.49

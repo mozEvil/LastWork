@@ -17,7 +17,7 @@ public class TableView extends JFrame implements PokerView {
     private PanelDecision panelDecision;
     private PanelCombo panelCombo;
     private PanelPosition panelPosition;
-    private PanelIOP panelIOP;
+    private PanelRealStack panelRealStack;
     private PanelActivePlayers panelActivePlayers;
     private PanelStreet panelStreet;
 
@@ -40,7 +40,7 @@ public class TableView extends JFrame implements PokerView {
         panelDecision = new PanelDecision();
         panelCombo = new PanelCombo();
         panelPosition = new PanelPosition();
-        panelIOP = new PanelIOP();
+        panelRealStack = new PanelRealStack();
         panelActivePlayers = new PanelActivePlayers();
         panelStreet = new PanelStreet();
 
@@ -65,12 +65,12 @@ public class TableView extends JFrame implements PokerView {
         layout.putConstraint(EAST, panelPosition,170, WEST , panelPosition);        // weight
         layout.putConstraint(SOUTH, panelPosition,50, NORTH , panelPosition);      // height
 
-        add(panelIOP);
+        add(panelRealStack);
 
-        layout.putConstraint(NORTH, panelIOP,150, NORTH, contentPane);
-        layout.putConstraint(WEST, panelIOP,0, WEST , contentPane);
-        layout.putConstraint(EAST, panelIOP,170, WEST , panelIOP);        // weight
-        layout.putConstraint(SOUTH, panelIOP,50, NORTH , panelIOP);      // height
+        layout.putConstraint(NORTH, panelRealStack,150, NORTH, contentPane);
+        layout.putConstraint(WEST, panelRealStack,0, WEST , contentPane);
+        layout.putConstraint(EAST, panelRealStack,170, WEST , panelRealStack);        // weight
+        layout.putConstraint(SOUTH, panelRealStack,50, NORTH , panelRealStack);      // height
 
         add(panelActivePlayers);
 
@@ -91,7 +91,7 @@ public class TableView extends JFrame implements PokerView {
         layout.putConstraint(NORTH, panelBot,550, NORTH, contentPane);
         layout.putConstraint(WEST, panelBot,0, WEST , contentPane);
         layout.putConstraint(EAST, panelBot,170, WEST , panelBot);        // weight
-        layout.putConstraint(SOUTH, panelBot,50, NORTH , panelBot);      // height
+        layout.putConstraint(SOUTH, panelBot,75, NORTH , panelBot);      // height
 
         setLocation(1198, 0);
 
@@ -115,9 +115,9 @@ public class TableView extends JFrame implements PokerView {
     public void update() {
         clear();
         if (env != null) {
-            panelStreet.setStreetValue(env.getStreet().toString());
             panelPosition.setPositionValue(env.getHeroPosition().toString());
-            panelIOP.setIopValue(env.getHeroIOP().toString());
+            panelStreet.setStreetValue(env.getStreet().toString());
+            panelRealStack.setRealStackValue(env.getRealHeroStackSize() + "");
             panelActivePlayers.setActivePlayersValue("" + env.getActivePlayersCount());
 
             if (env.getStreet() == Street.PREFLOP) {
@@ -136,7 +136,7 @@ public class TableView extends JFrame implements PokerView {
         panelCombo.setComboValue("");
         panelPosition.setPositionValue("");
         panelStreet.setStreetValue("");
-        panelIOP.setIopValue("");
+        panelRealStack.setRealStackValue("");
         panelActivePlayers.setActivePlayersValue("");
     }
 }
