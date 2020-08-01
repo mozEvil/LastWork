@@ -15,7 +15,7 @@ public class TableView extends JFrame implements PokerView {
     private InfoPanel panel;
 
     public TableView() throws HeadlessException {
-        super("Statistics by mozEvil");
+        super("Info");
         init();
     }
 

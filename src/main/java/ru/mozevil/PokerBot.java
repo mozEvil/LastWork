@@ -41,10 +41,11 @@ public class PokerBot implements Runnable {
     public void run() {
         // делаем снимок экрана
         parser.setImageTable(robot.grabScreen());
+        System.out.print(".");
 
         // если настал ход hero.
         if (parser.isAction()) {
-            System.out.print(". ");
+            System.out.print("\n. ");
             // парсим стол
             Table table = parser.parseTable();
             System.out.print(". ");
