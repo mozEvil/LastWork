@@ -27,8 +27,13 @@ public class PanelBotSettings extends JPanel {
 
     public PanelBotSettings(PokerView view) {
         init();
+        // настройки бота
         pokerBot = new PokerBot();
         pokerBot.setView(view);
+        pokerBot.setParser(new TableParser());
+        pokerBot.setStrategy(new SnG_45_simple());
+        pokerBot.setRobot(new RobotKey());
+        pokerBot.setAutoMove(false);
     }
 
     private void init() {
@@ -36,7 +41,7 @@ public class PanelBotSettings extends JPanel {
 
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
-        setSize(170, 50);
+        setSize(170, 100);
 
         JLabel settings = new JLabel("Play music");
 
@@ -88,7 +93,8 @@ public class PanelBotSettings extends JPanel {
         layout.putConstraint(NORTH, btnScan, 50, NORTH, this);
         layout.putConstraint(WEST, btnScan, 0, WEST, this);
         layout.putConstraint(EAST, btnScan, 170, WEST, btnScan); // weight
-        layout.putConstraint(SOUTH, btnScan, 25, NORTH, btnScan); // height
+        layout.putConstraint(SOUTH, btnScan, 50, NORTH, btnScan); // height
+
 
         btnStart.setEnabled(!isStarted);
         btnScan.setEnabled(!isStarted);
@@ -96,12 +102,6 @@ public class PanelBotSettings extends JPanel {
     }
 
     public void handleStart() {
-        // настройки бота
-        pokerBot.setParser(new TableParser());
-        pokerBot.setStrategy(new SnG_45_simple());
-        pokerBot.setRobot(new RobotKey());
-        pokerBot.setAutoMove(false);
-
         // парсим каждую секунду
         executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(pokerBot, 0, 1, TimeUnit.SECONDS);
@@ -122,18 +122,34 @@ public class PanelBotSettings extends JPanel {
     }
 
     public void handleScan() {
-        pokerBot.setParser(new TableParser());
-        pokerBot.setStrategy(new SnG_45_simple());
-        pokerBot.setRobot(new RobotKey());
-        pokerBot.setAutoMove(false);
 
-        new Thread(pokerBot).start();
+        btnStart.setEnabled(false);
+        btnStop.setEnabled(false);
+        btnScan.setEnabled(false);
+        btnScan.setText("Scanning ...");
+
+        new SwingWorker<>() {
+
+            @Override
+            protected Boolean doInBackground() throws Exception {
+                pokerBot.run();
+                return true;
+            }
+
+            @Override
+            protected void done() {
+                btnScan.setText("Scan");
+                updateBtnStatus();
+            }
+        }.execute();
     }
 
-    private void updateBtnStatus() {
+
+    public void updateBtnStatus() {
         btnStart.setEnabled(!isStarted);
         btnScan.setEnabled(!isStarted);
         btnStop.setEnabled(isStarted);
     }
+
 
 }

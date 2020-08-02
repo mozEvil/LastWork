@@ -11,7 +11,8 @@ public class SnG_45_simple implements PokerStrategy {
 
     private Environment env;
 
-    private final Level lvl = LVL_Factory.getLVL_SnG_45();
+//    private final Level lvl = LVL_Factory.getLVL_SnG_45();
+    private final Level lvl = LVL_Factory.getLVL_SnG_9_PlayMoney();
 
     private final Chart chartNash_push_HU = ChartFactory.getChart_Nash_push_HU();
     private final Chart chartNash_call_HU = ChartFactory.getChart_Nash_call_HU();
@@ -84,7 +85,10 @@ public class SnG_45_simple implements PokerStrategy {
         this.env = env;
         env.setLvl(lvl);
 
-        if (env.getStreet() == null) return DF.check_fold();
+        if (env.getStreet() == null) {
+            log.error("Street == null");
+            return DF.check_fold();
+        }
 
         if (env.getStreet() == Street.PREFLOP) {
             return getPreflop();

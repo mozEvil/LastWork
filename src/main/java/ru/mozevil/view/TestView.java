@@ -1,8 +1,11 @@
 package ru.mozevil.view;
 
+import javax.swing.*;
+
 public class TestView {
 
     public static void main(String[] args) {
-        new TableView();
+
+        SwingUtilities.invokeLater(TableView::new);
     }
 }
