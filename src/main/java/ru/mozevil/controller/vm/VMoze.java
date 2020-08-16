@@ -1,6 +1,9 @@
 package ru.mozevil.controller.vm;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.virtualbox_6_1.*;
+import ru.mozevil.controller.strategy.SnG_45_simple;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -21,6 +24,8 @@ import java.io.IOException;
  * */
 public class VMoze {
 
+    private static final Logger log = Logger.getLogger(SnG_45_simple.class.getName());
+
     private VirtualBoxManager mgr;
     private ISession session;
     private IMachine machine;
@@ -30,34 +35,32 @@ public class VMoze {
         this.machineName = machineName;
     }
 
+    /**
+     * Path to vboxwebsrv.exe must be in system PATH
+     * */
     public void startWebServer() {
         try {
             Runtime.getRuntime().exec("cmd /C powershell  vboxwebsrv -A null");
 
         } catch (IOException ioException) {
-            System.out.println("Cannot start webserver.");
+            log.error("Cannot start webserver.");
         }
     }
 
-    public boolean connect() {
-
+    public void connect() {
         mgr = VirtualBoxManager.createInstance(null);
-
         try {
             mgr.connect("http://localhost:18083", null, null);
-            return true;
-
         } catch (VBoxException e) {
-            System.out.println("Cannot connect, start webserver first!");
+            log.log(Level.ERROR, "Cannot connect.", e);
         }
-        return false;
     }
 
     public void disconnect() {
         try {
             mgr.disconnect();
         } catch (VBoxException e) {
-            e.printStackTrace();
+            log.log(Level.ERROR, "Disconnect", e);
         }
         mgr.cleanup();
 
@@ -66,27 +69,25 @@ public class VMoze {
         mgr = null;
     }
 
-    public boolean openSession() {
-
+    public void openSession() {
         if (machine == null) {
             machine = mgr.getVBox().findMachine(machineName);
         }
-
         try {
             if (session == null) {
                 session = mgr.openMachineSession(machine);
             }
-            return true;
-
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Cannot open machine session.");
+            log.log(Level.ERROR, "Cannot open machine session.", e);
         }
-        return false;
     }
 
     public void closeSession() {
-        mgr.closeMachineSession(session);
+        try {
+            mgr.closeMachineSession(session);
+        } catch (Exception e) {
+            log.log(Level.ERROR, "Cannot close machine session", e);
+        }
         mgr.waitForEvents(0);
         session = null;
     }
@@ -102,35 +103,45 @@ public class VMoze {
     }
 
     public BufferedImage getScreenShot() {
-
         BufferedImage img = null;
-
         try{
             byte[] arr = session.getConsole().getDisplay()
                     .takeScreenShotToArray(0L, 1024L, 768L, BitmapFormat.PNG);
             img = ImageIO.read(new ByteArrayInputStream(arr));
 
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Cannot read image byte array.");
+            log.log(Level.ERROR, "Cannot read image byte array.", e);
         }
-
         return img;
     }
 
+    /**
+     * Move mouse cursor to absolute position X and Y on the screen.
+     * P.S. mouse integration must be enabled for correct work this function (don't know why).
+     * */
     public void mouseMoveTo(int x, int y) {
-        session.getConsole().getMouse().putMouseEventAbsolute(x, y, 0, 0, 0x01);
+        session.getConsole().getMouse().putMouseEventAbsolute(x, y, 0, 0, 0);
     }
 
+    /**
+     * Move mouse cursor for X pixels right or left (negative number) and Y pixels down or up (negative number).
+     * */
     public void mouseMoveFor(int x, int y) {
-        session.getConsole().getMouse().putMouseEvent(x, y, 0, 0, 0x01);
+        session.getConsole().getMouse().putMouseEvent(x, y, 0, 0, 0);
     }
 
+    /**
+     * Click mouse button in current position.
+     * */
+    public void mouseClick(int buttonCode) {
+        session.getConsole().getMouse().putMouseEvent(0, 0, 0, 0, buttonCode);
+        session.getConsole().getMouse().putMouseEvent(0, 0, 0, 0, 0);
+    }
+
+    /**
+     * Press or release keyboard buttons.
+     * */
     public void keyboardPut(int keyCode) {
         session.getConsole().getKeyboard().putScancode(keyCode);
     }
-
-
-
-
 }
