@@ -1,4 +1,4 @@
-package ru.mozevil;
+package ru.mozevil.controller;
 
 import ru.mozevil.controller.parser.PokerParser;
 import ru.mozevil.controller.robot.PokerRobot;

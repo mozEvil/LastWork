@@ -1,6 +1,6 @@
 package ru.mozevil.view;
 
-import ru.mozevil.PokerBot;
+import ru.mozevil.controller.PokerBot;
 import ru.mozevil.controller.parser.TableParser;
 import ru.mozevil.controller.robot.RobotKey;
 import ru.mozevil.controller.strategy.SnG_45_simple;
