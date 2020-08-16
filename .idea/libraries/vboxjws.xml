@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="vboxjws">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/vboxjws.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

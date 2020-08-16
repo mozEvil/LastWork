@@ -1,4 +1,4 @@
-package org.example;
+package ru.mozevil.controller.vm;
 
 import org.virtualbox_6_1.*;
 
