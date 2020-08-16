@@ -118,6 +118,17 @@ public class VMoze {
         return img;
     }
 
+    public void mouseMoveTo(int x, int y) {
+        session.getConsole().getMouse().putMouseEventAbsolute(x, y, 0, 0, 0x01);
+    }
+
+    public void mouseMoveFor(int x, int y) {
+        session.getConsole().getMouse().putMouseEvent(x, y, 0, 0, 0x01);
+    }
+
+    public void keyboardPut(int keyCode) {
+        session.getConsole().getKeyboard().putScancode(keyCode);
+    }
 
 
 
