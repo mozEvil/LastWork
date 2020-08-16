@@ -8,12 +8,14 @@ public class TestVM {
         vm.connect();
         vm.openSession();
 
-        vm.keyboardPut(KeyCode.PRESS_1);
-        vm.keyboardPut(KeyCode.RELEASE_1);
-        vm.keyboardPut(KeyCode.PRESS_2);
-        vm.keyboardPut(KeyCode.RELEASE_2);
+        vm.keyboardPut(KeyCode.PRESS_SHIFT);
+        vm.keyboardPut(KeyCode.PRESS_A);
+        vm.keyboardPut(KeyCode.RELEASE_A);
+        vm.keyboardPut(KeyCode.RELEASE_SHIFT);
+        vm.keyboardPut(KeyCode.PRESS_ENTER);
+        vm.keyboardPut(KeyCode.RELEASE_ENTER);
 
-        vm.mouseMoveFor(50, 50);
+//        vm.mouseMoveFor(50, 50);
 
         vm.closeSession();
         vm.disconnect();
