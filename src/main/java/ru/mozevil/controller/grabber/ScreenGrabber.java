@@ -4,7 +4,9 @@ import ru.mozevil.controller.parser.PokerParser;
 import ru.mozevil.controller.parser.TableParser;
 import ru.mozevil.controller.robot.RobotKey;
 import ru.mozevil.controller.robot.PokerRobot;
+import ru.mozevil.model.DF;
 import ru.mozevil.model.Decision;
+import ru.mozevil.model.Environment;
 import ru.mozevil.model.Move;
 
 import javax.imageio.ImageIO;
@@ -42,7 +44,10 @@ public class ScreenGrabber implements Runnable {
                 e.printStackTrace();
             }
 
-            robot.makeMove(new Decision(Move.CALL));
+            Environment env = new Environment();
+            env.setDecision(DF.fold());
+
+            robot.makeMove(env);
         }
     }
 

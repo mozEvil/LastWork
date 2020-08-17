@@ -14,7 +14,11 @@ import java.util.stream.Collectors;
 public class Environment {
 
     private Table table;
+    private Decision decision;
     private Level lvl;
+
+    public Environment() {
+    }
 
     public Environment(Table table) {
         this.table = table;
@@ -26,6 +30,14 @@ public class Environment {
 
     public void setTable(Table table) {
         this.table = table;
+    }
+
+    public Decision getDecision() {
+        return decision;
+    }
+
+    public void setDecision(Decision decision) {
+        this.decision = decision;
     }
 
     public void setLvl(Level lvl) {

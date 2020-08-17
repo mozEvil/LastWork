@@ -15,8 +15,6 @@ public class PokerBot implements Runnable {
     private PokerRobot robot;
     private PokerView view;
 
-    private Decision decision;
-
     private boolean autoMove;
 
     public void setParser(PokerParser parser) {
@@ -39,10 +37,6 @@ public class PokerBot implements Runnable {
         this.autoMove = autoMove;
     }
 
-    public void makeMove(){
-        if (decision != null) robot.makeMove(decision);
-    }
-
     @Override
     public void run() {
         // делаем снимок экрана
@@ -51,28 +45,21 @@ public class PokerBot implements Runnable {
 
         // если настал ход hero.
         if (parser.isAction()) {
+
             // парсим стол
-            Table table = parser.parseTable();
+            Environment env = parser.parseTable();
 
-            // заворачиваем стол в обертку
-            Environment env = new Environment(table);
-
-            // принимаем решение, в соответсвии со стратегией
-            decision = strategy.makeDecision(env);
+            // принимаем решение
+            strategy.makeDecision(env);
 
             // показываем решение
-            view.setEnvironment(env);
-            view.setDecision(decision);
-            view.update();
+            view.update(env);
 
-            // выполняем принятое решение, если нужно
-            if (autoMove) makeMove();
+            // выполняем решение, если нужно
+            if (autoMove) robot.makeMove(env);
 
         } else { // если ход hero не наступил, то ничего не делаем
-            view.setEnvironment(null);
-            view.setDecision(null);
-            decision = null;
-            view.update();
+            view.update(null);
         }
     }
 }

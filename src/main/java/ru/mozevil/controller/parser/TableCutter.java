@@ -176,6 +176,9 @@ public class TableCutter {
 
 
     private BufferedImage cutTable(TableMap tableMap) {
+
+        if (imageTable == null) return null;
+
         return imageTable.getSubimage(tableMap.getX(), tableMap.getY(), tableMap.getW(), tableMap.getH());
     }
 

@@ -1,7 +1,7 @@
 package ru.mozevil.controller.robot;
 
 import ru.mozevil.controller.vm.VMoze;
-import ru.mozevil.model.Decision;
+import ru.mozevil.model.Environment;
 
 import java.awt.image.BufferedImage;
 //todo robot VM
@@ -20,7 +20,7 @@ public class RobotVM implements PokerRobot {
 
 
     @Override
-    public void makeMove(Decision decision) {
+    public void makeMove(Environment env) {
 
     }
 }

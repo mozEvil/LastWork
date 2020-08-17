@@ -1,6 +1,7 @@
 package ru.mozevil.controller.robot;
 
 import ru.mozevil.model.Decision;
+import ru.mozevil.model.Environment;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -33,8 +34,8 @@ public class RobotMouse implements PokerRobot {
     }
 
     @Override
-    public void makeMove(Decision decision) {
-        switch (decision.getMove()) {
+    public void makeMove(Environment env) {
+        switch (env.getDecision().getMove()) {
             case FOLD:
                 pressFold();
                 break;

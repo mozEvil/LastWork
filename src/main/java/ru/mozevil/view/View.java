@@ -2,7 +2,6 @@ package ru.mozevil.view;
 
 import ru.mozevil.controller.Controller;
 import ru.mozevil.controller.PokerController;
-import ru.mozevil.model.Decision;
 import ru.mozevil.model.Environment;
 
 import javax.swing.*;
@@ -13,9 +12,6 @@ import java.awt.event.WindowEvent;
 import static javax.swing.SpringLayout.*;
 
 public class View  extends JFrame implements PokerView {
-
-    private Environment env;
-    private Decision decision;
 
     private final ControlPanel controlPanel;
     private final InfoPanel200 panelDecision;
@@ -76,19 +72,9 @@ public class View  extends JFrame implements PokerView {
     }
 
     @Override
-    public void setEnvironment(Environment env) {
-        this.env = env;
-    }
-
-    @Override
-    public void setDecision(Decision decision) {
-        this.decision = decision;
-    }
-
-    @Override
-    public void update() {
+    public void update(Environment env) {
         controlPanel.update();
-        panelDecision.update(decision == null ? "" : decision.toString());
+        panelDecision.update(env == null ? "" : env.getDecision().toString());
         panelHand.update(env == null ? "" : env.getHeroHand().toString());
         panelBoard.update(env == null ? "" : env.getTableCards().toString());
         panelCombo.update(env == null ? "" : "" + env.getBestCombo());

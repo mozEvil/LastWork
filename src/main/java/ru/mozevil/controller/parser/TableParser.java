@@ -26,7 +26,7 @@ public class TableParser implements PokerParser {
     }
 
     @Override
-    public Table parseTable() {
+    public Environment parseTable() {
         // инициализация значениями по умолчанию
         Seat[] seats = new Seat[MAX_TABLE_SIZE];
         for (int i = 0; i < MAX_TABLE_SIZE; i++) {
@@ -102,7 +102,7 @@ public class TableParser implements PokerParser {
         table.setCanCheckCall(canCheckCall);
         table.setCanFold(canFold);
 
-        return table;
+        return new Environment(table);
     }
 
     /**

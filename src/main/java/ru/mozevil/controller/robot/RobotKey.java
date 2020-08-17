@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import ru.mozevil.controller.strategy.SnG_45_simple;
 import ru.mozevil.model.Bet;
 import ru.mozevil.model.Decision;
+import ru.mozevil.model.Environment;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -38,18 +39,20 @@ public class RobotKey implements PokerRobot {
     }
 
     @Override
-    public void makeMove(Decision decision) {
-        switch (decision.getMove()) {
-            case FOLD:
-                pressCheckFold();
-                break;
-            case CHECK:
-            case CALL:
-                pressCheckCall();
-                break;
-            case RAISE:
-                pressRaise(decision.getValue());
-                break;
+    public void makeMove(Environment env) {
+        if (env != null) {
+            switch (env.getDecision().getMove()) {
+                case FOLD:
+                    pressCheckFold();
+                    break;
+                case CHECK:
+                case CALL:
+                    pressCheckCall();
+                    break;
+                case RAISE:
+                    pressRaise(env.getDecision().getValue());
+                    break;
+            }
         }
     }
 

@@ -1,7 +1,6 @@
 package ru.mozevil.controller.strategy;
 
 import org.apache.log4j.Logger;
-import ru.mozevil.controller.eva.HandTypeEvaluator;
 import ru.mozevil.model.*;
 import ru.mozevil.model.positions.Position;
 
@@ -80,24 +79,25 @@ public class SnG_45_simple implements PokerStrategy {
     private final Range range_BB_cc_vs_SB_BTN_push_5bb = new Range("22+, A2+, KT+, JTs++");
 
     @Override
-    public Decision makeDecision(Environment env) {
+    public void makeDecision(Environment env) {
 
         this.env = env;
         env.setLvl(lvl);
 
         if (env.getStreet() == null) {
             log.error("Street == null");
-            return DF.check_fold();
+            env.setDecision(DF.check_fold());
+            return;
         }
 
         if (env.getStreet() == Street.PREFLOP) {
-            return getPreflop();
+            env.setDecision(makePreflop());
         } else {
-            return getPostflop();
+            env.setDecision(makePostflop());
         }
     }
 
-    private Decision getPreflop() {
+    private Decision makePreflop() {
 
         double realHeroStack = env.getRealHeroStackSize();
 
@@ -491,7 +491,7 @@ public class SnG_45_simple implements PokerStrategy {
         return DF.fold();
     }
 
-    private Decision getPostflop() {
+    private Decision makePostflop() {
 
         if (env.getStreet() == Street.FLOP) return makeFlop();
         if (env.getStreet() == Street.TURN) return makeTurn();
