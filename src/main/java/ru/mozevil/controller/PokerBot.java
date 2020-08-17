@@ -39,10 +39,6 @@ public class PokerBot implements Runnable {
         this.autoMove = autoMove;
     }
 
-    public Decision getDecision() {
-        return decision;
-    }
-
     public void makeMove(){
         if (decision != null) robot.makeMove(decision);
     }

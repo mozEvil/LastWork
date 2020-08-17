@@ -1,6 +1,6 @@
 package ru.mozevil;
 
-import ru.mozevil.view.TableView;
+import ru.mozevil.view.View;
 
 import javax.swing.*;
 
@@ -8,8 +8,9 @@ public class App {
 
     public static void main( String[] args ) {
 
-        SwingUtilities.invokeLater(TableView::new);
+        SwingUtilities.invokeLater(View::new);
 
     }
+
 
 }

@@ -3,7 +3,6 @@ package ru.mozevil.controller.vm;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.virtualbox_6_1.*;
-import ru.mozevil.controller.strategy.SnG_45_simple;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -24,7 +23,7 @@ import java.io.IOException;
  * */
 public class VMoze {
 
-    private static final Logger log = Logger.getLogger(SnG_45_simple.class.getName());
+    private static final Logger log = Logger.getLogger(VMoze.class.getName());
 
     private VirtualBoxManager mgr;
     private ISession session;
@@ -59,10 +58,10 @@ public class VMoze {
     public void disconnect() {
         try {
             mgr.disconnect();
+            mgr.cleanup();
         } catch (VBoxException e) {
             log.log(Level.ERROR, "Disconnect", e);
         }
-        mgr.cleanup();
 
         machine = null;
         session = null;
@@ -70,10 +69,10 @@ public class VMoze {
     }
 
     public void openSession() {
-        if (machine == null) {
-            machine = mgr.getVBox().findMachine(machineName);
-        }
         try {
+            if (machine == null) {
+                machine = mgr.getVBox().findMachine(machineName);
+            }
             if (session == null) {
                 session = mgr.openMachineSession(machine);
             }
@@ -85,21 +84,29 @@ public class VMoze {
     public void closeSession() {
         try {
             mgr.closeMachineSession(session);
+            mgr.waitForEvents(0);
         } catch (Exception e) {
             log.log(Level.ERROR, "Cannot close machine session", e);
         }
-        mgr.waitForEvents(0);
         session = null;
     }
 
     public void machinePowerUp() {
-        machine.launchVMProcess(session, "gui", null).waitForCompletion(-1);
-        mgr.waitForEvents(0);
+        try {
+            machine.launchVMProcess(session, "gui", null).waitForCompletion(-1);
+            mgr.waitForEvents(0);
+        } catch (Exception e) {
+            log.log(Level.ERROR, "Cannot launch machine", e);
+        }
     }
 
     public void machinePowerDown() {
-        session.getConsole().powerDown().waitForCompletion(-1);
-        mgr.waitForEvents(0);
+        try {
+            session.getConsole().powerDown().waitForCompletion(-1);
+            mgr.waitForEvents(0);
+        } catch (Exception e) {
+            log.log(Level.ERROR, "Cannot power down machine", e);
+        }
     }
 
     public BufferedImage getScreenShot() {
@@ -109,8 +116,8 @@ public class VMoze {
                     .takeScreenShotToArray(0L, 1024L, 768L, BitmapFormat.PNG);
             img = ImageIO.read(new ByteArrayInputStream(arr));
 
-        } catch (IOException e) {
-            log.log(Level.ERROR, "Cannot read image byte array.", e);
+        } catch (Exception e) {
+            log.log(Level.ERROR, "Cannot take screenshot.", e);
         }
         return img;
     }
@@ -120,28 +127,44 @@ public class VMoze {
      * P.S. mouse integration must be enabled for correct work this function (don't know why).
      * */
     public void mouseMoveTo(int x, int y) {
-        session.getConsole().getMouse().putMouseEventAbsolute(x, y, 0, 0, 0);
+        try {
+            session.getConsole().getMouse().putMouseEventAbsolute(x, y, 0, 0, 0);
+        } catch (Exception e) {
+            log.log(Level.ERROR, "Cannot mouse move.", e);
+        }
     }
 
     /**
      * Move mouse cursor for X pixels right or left (negative number) and Y pixels down or up (negative number).
      * */
     public void mouseMoveFor(int x, int y) {
-        session.getConsole().getMouse().putMouseEvent(x, y, 0, 0, 0);
+        try {
+            session.getConsole().getMouse().putMouseEvent(x, y, 0, 0, 0);
+        } catch (Exception e) {
+            log.log(Level.ERROR, "Cannot mouse move.", e);
+        }
     }
 
     /**
      * Click mouse button in current position.
      * */
     public void mouseClick(int buttonCode) {
-        session.getConsole().getMouse().putMouseEvent(0, 0, 0, 0, buttonCode);
-        session.getConsole().getMouse().putMouseEvent(0, 0, 0, 0, 0);
+        try {
+            session.getConsole().getMouse().putMouseEvent(0, 0, 0, 0, buttonCode);
+            session.getConsole().getMouse().putMouseEvent(0, 0, 0, 0, 0);
+        } catch (Exception e) {
+            log.log(Level.ERROR, "Cannot mouse click.", e);
+        }
     }
 
     /**
      * Press or release keyboard buttons.
      * */
     public void keyboardPut(int keyCode) {
-        session.getConsole().getKeyboard().putScancode(keyCode);
+        try {
+            session.getConsole().getKeyboard().putScancode(keyCode);
+        } catch (Exception e) {
+            log.log(Level.ERROR, "Cannot press keyboard.", e);
+        }
     }
 }

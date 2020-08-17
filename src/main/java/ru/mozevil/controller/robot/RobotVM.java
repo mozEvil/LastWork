@@ -9,10 +9,8 @@ public class RobotVM implements PokerRobot {
 
     private VMoze vm;
 
-    public RobotVM() {
-        vm = new VMoze("Win7");
-        vm.connect();
-        vm.openSession();
+    public RobotVM(VMoze vm) {
+        this.vm = vm;
     }
 
     @Override
