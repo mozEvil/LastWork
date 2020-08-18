@@ -1,21 +1,21 @@
 package ru.mozevil.controller;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import ru.mozevil.controller.parser.PokerParser;
 import ru.mozevil.controller.robot.PokerRobot;
 import ru.mozevil.controller.strategy.PokerStrategy;
-import ru.mozevil.model.Decision;
 import ru.mozevil.model.Environment;
-import ru.mozevil.model.Table;
 import ru.mozevil.view.PokerView;
 
 public class PokerBot implements Runnable {
+
+    private static final Logger log = Logger.getLogger(PokerBot.class.getName());
 
     private PokerParser parser;
     private PokerStrategy strategy;
     private PokerRobot robot;
     private PokerView view;
-
-    private boolean autoMove;
 
     public void setParser(PokerParser parser) {
         this.parser = parser;
@@ -33,33 +33,35 @@ public class PokerBot implements Runnable {
         this.view = view;
     }
 
-    public void setAutoMove(boolean autoMove) {
-        this.autoMove = autoMove;
-    }
-
     @Override
     public void run() {
-        // делаем снимок экрана
-        parser.setImageTable(robot.grabScreen());
-        System.out.print(".");
 
-        // если настал ход hero.
-        if (parser.isAction()) {
+        Environment env = null;
 
-            // парсим стол
-            Environment env = parser.parseTable();
+        try {
+            // делаем снимок экрана
+            parser.setImageTable(robot.grabScreen());
+            System.out.print(".");
 
-            // принимаем решение
-            strategy.makeDecision(env);
+            // если настал ход hero.
+            if (parser.isAction()) {
 
-            // показываем решение
+                // парсим стол
+                env = parser.parseTable();
+
+                // принимаем решение
+                strategy.makeDecision(env);
+
+                // выполняем решение
+//                robot.makeMove(env);
+            }
+        } catch (Exception e) {
+            log.log(Level.ERROR, "BOT ERROR", e);
+            env = null;
+        }
+
+        if (view != null) {
             view.update(env);
-
-            // выполняем решение, если нужно
-            if (autoMove) robot.makeMove(env);
-
-        } else { // если ход hero не наступил, то ничего не делаем
-            view.update(null);
         }
     }
 }

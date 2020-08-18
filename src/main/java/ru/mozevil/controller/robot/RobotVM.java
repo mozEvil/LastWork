@@ -4,10 +4,11 @@ import ru.mozevil.controller.vm.VMoze;
 import ru.mozevil.model.Environment;
 
 import java.awt.image.BufferedImage;
+
 //todo robot VM
 public class RobotVM implements PokerRobot {
 
-    private VMoze vm;
+    private final VMoze vm;
 
     public RobotVM(VMoze vm) {
         this.vm = vm;
@@ -17,7 +18,6 @@ public class RobotVM implements PokerRobot {
     public BufferedImage grabScreen() {
         return vm.getScreenShot();
     }
-
 
     @Override
     public void makeMove(Environment env) {

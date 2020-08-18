@@ -1,10 +1,14 @@
 package ru.mozevil.controller.parser;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import ru.mozevil.model.TableMap;
 
 import java.awt.image.BufferedImage;
 
 public class TableCutter {
+
+    private static final Logger log = Logger.getLogger(TableCutter.class.getName());
 
     private BufferedImage imageTable;
 
@@ -177,9 +181,15 @@ public class TableCutter {
 
     private BufferedImage cutTable(TableMap tableMap) {
 
-        if (imageTable == null) return null;
+        BufferedImage img = null;
 
-        return imageTable.getSubimage(tableMap.getX(), tableMap.getY(), tableMap.getW(), tableMap.getH());
+        try {
+            img = imageTable.getSubimage(tableMap.getX(), tableMap.getY(), tableMap.getW(), tableMap.getH());
+        } catch (Exception e) {
+            log.log(Level.ERROR, "ERROR CutTable", e);
+        }
+
+        return img;
     }
 
     public BufferedImage getLvlImg() {
