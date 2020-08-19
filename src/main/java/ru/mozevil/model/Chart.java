@@ -1,7 +1,12 @@
 package ru.mozevil.model;
 
+import ru.mozevil.model.factory.HANDS;
+
 import java.util.HashMap;
 
+/**
+ * Push-fold chart.
+ * */
 public class Chart {
 
     private final HashMap<Hand, Double> map = new HashMap<>();

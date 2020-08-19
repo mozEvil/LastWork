@@ -1,4 +1,4 @@
-package ru.mozevil.controller.vm;
+package ru.mozevil.controller.robot.vm;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;

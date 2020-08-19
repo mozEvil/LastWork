@@ -4,7 +4,6 @@ import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import ru.mozevil.controller.strategy.SnG_45_simple;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -21,12 +20,10 @@ public class OCRParser {
     }
 
     public int parseLevel(BufferedImage image) {
-
         String result = parseString(image);
         result = result.replace("Next Level", "").trim();
 
         int lvl = 1;
-
         if (result.length() > 0) {
             try {
                 lvl = Integer.parseInt(result);
@@ -35,15 +32,12 @@ public class OCRParser {
                 log.log(Level.ERROR," ERROR PARSE LVL", e);
             }
         }
-
         return lvl;
     }
 
     public double parseStack(BufferedImage image) {
-
         BufferedImage readyImg = getImgReadyForOCR(image);
         BufferedImage cutReadyImg = cutImg(readyImg);
-
         String result = parseString(cutReadyImg);
 
         if (result.length() == 0) {
@@ -59,30 +53,21 @@ public class OCRParser {
         result = result.replace("B", "").trim();
 
         double stack;
-
         try {
-
             stack = Double.parseDouble(result);
-
         } catch (Exception e) {
             log.log(Level.ERROR,"ERROR PARSE STACK", e);
             stack = -2;
         }
-
         return stack;
     }
 
     public double parseBet(BufferedImage image) {
-
         BufferedImage readyImg = getImgReadyForOCR(image);
-
         BufferedImage cutReadyImg = cutImg(readyImg);
-
         String result = parseString(cutReadyImg).replace("B", "").trim();
-//        System.out.println(result);
 
         double bet = 0;
-
         if (result.length() > 0) {
             try {
                 bet = Double.parseDouble(result);
@@ -92,13 +77,11 @@ public class OCRParser {
                 bet = -2;
             }
         }
-
         return bet;
     }
 
     /** обрезает черно-белую картинку по черным пикселям слева и справа*/
     public BufferedImage cutImg(BufferedImage image) {
-
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
                 if (image.getRGB(x, y) == -16777216) {
@@ -112,7 +95,6 @@ public class OCRParser {
     }
 
     private BufferedImage cutEndImg(BufferedImage image) {
-
         for (int x = image.getWidth() - 1; x > 0; x--) {
             for (int y = 0; y < image.getHeight() ; y++) {
                 if (image.getRGB(x, y) == -16777216) {
@@ -124,35 +106,36 @@ public class OCRParser {
     }
 
     public double parsePot(BufferedImage image) {
-
         String result = parseString(getImgReadyForOCR(image));
         result = result.replace("Pot:", "");
         result = result.replace("BB", "");
 
-        return Double.parseDouble(result.trim());
+        double value = 0;
+        try {
+            value = Double.parseDouble(result.trim());
+
+        } catch (Exception e) {
+            log.log(Level.ERROR," ERROR PARSE POT", e);
+            value = -2;
+        }
+        return value;
     }
 
     public String parseString(BufferedImage image) {
-
         String result = "";
-
         try {
             result = tesseract.doOCR(image);
         } catch (TesseractException e) {
-            e.printStackTrace();
+            log.log(Level.ERROR,"ERROR PARSE STRING", e);
         }
-
         return result;
     }
 
     /** @return X*/
     private int findImg(BufferedImage imageWhatNeedFind, BufferedImage imageWhereNeedFind) {
-
         for (int i = 0; i < imageWhereNeedFind.getWidth() - imageWhatNeedFind.getWidth(); i++) {
-
             BufferedImage pieceImg = imageWhereNeedFind.getSubimage(i, 0,
                     imageWhatNeedFind.getWidth(), imageWhereNeedFind.getHeight());
-
             if (imageCompare(pieceImg, imageWhatNeedFind)) return i;
         }
         System.out.println(" не нашел совпадения");
@@ -160,7 +143,6 @@ public class OCRParser {
     }
 
     private boolean imageCompare(BufferedImage image1, BufferedImage image2) {
-
         if (image1 == null || image2 == null) return false;
         if (image1.getWidth() != image2.getWidth()) return false;
         if (image1.getHeight() != image2.getHeight()) return false;
@@ -170,23 +152,19 @@ public class OCRParser {
                 if (image1.getRGB(x, y) != image2.getRGB(x, y)) return false;
             }
         }
-
         return true;
     }
 
     public BufferedImage getInactiveStackImgReadyForOCR(BufferedImage image) {
-
         return convertToBlackWhite(convertToMoreLight(image));
     }
 
     public BufferedImage getImgReadyForOCR(BufferedImage image) {
-
         return invertBlackAndWhite(convertToBlackWhite(image));
     }
 
     /** делает изображение более ярким (используется для изменения результатов конвертации в бинарное изображение)*/
     public BufferedImage convertToMoreLight(BufferedImage image) {
-
         BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = result.createGraphics();
         g2d.drawImage(image, 0, 0, null);
@@ -194,18 +172,14 @@ public class OCRParser {
 
         for (int x = 0; x < result.getWidth(); x++) {
             for (int y = 0; y < result.getHeight(); y++) {
-
                 int rbg = result.getRGB(x, y) - 5005035; //5005035
-
                 result.setRGB(x, y, rbg);
             }
         }
-
         return result;
     }
 
     public BufferedImage convertToGrayscale(BufferedImage colorImage) {
-
         BufferedImage grayscale = new BufferedImage(colorImage.getWidth(), colorImage.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
         Graphics2D g2d = grayscale.createGraphics();
         g2d.drawImage(colorImage, 0, 0, null);
@@ -216,7 +190,6 @@ public class OCRParser {
 
     /** конвертирует изображенеи в бинарное черно-белое*/
     public BufferedImage convertToBlackWhite(BufferedImage colorImage) {
-
         BufferedImage blackWhite = new BufferedImage(colorImage.getWidth(), colorImage.getHeight(), BufferedImage.TYPE_BYTE_BINARY);
         Graphics2D g2d = blackWhite.createGraphics();
         g2d.drawImage(colorImage, 0, 0, null);
@@ -244,23 +217,19 @@ public class OCRParser {
                 else {
                     imageOut.setRGB(i, j, image.getRGB(i, j));
                 }
-
             }
         }
-
         return imageOut;
     }
 
     private BufferedImage getBlackImage(int width, int height) {
-        BufferedImage image = new BufferedImage(width, height,
-                BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
         for (int i = 0; i < width - 1; i++) {
             for (int j = 0; j < height - 1; j++) {
                 image.setRGB(i, j, Color.black.getRGB());
             }
         }
-
         return image;
     }
 

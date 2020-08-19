@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 
 public class Environment {
 
-    private Table table;
-    private Decision decision;
-    private Level lvl;
+    private volatile Table table;
+    private volatile Decision decision;
+    private volatile Level lvl;
 
     public Environment() {
     }

@@ -1,8 +1,12 @@
-package ru.mozevil.model;
+package ru.mozevil.model.factory;
 
-public class ChartFactory {
+import ru.mozevil.model.Chart;
+import ru.mozevil.model.Range;
 
-    public static Chart getChart_Nash_push_HU() {
+public class CHARTS {
+    private CHARTS() {}
+
+    public static Chart Nash_Push_HU() {
 
         Chart chart = new Chart();
 
@@ -58,7 +62,7 @@ public class ChartFactory {
         return chart;
     }
 
-    public static Chart getChart_Nash_call_HU() {
+    public static Chart Nash_Call_HU() {
 
         Chart chart = new Chart();
 

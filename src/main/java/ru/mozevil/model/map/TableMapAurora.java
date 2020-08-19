@@ -1,4 +1,4 @@
-package ru.mozevil.model;
+package ru.mozevil.model.map;
 
 public enum TableMapAurora {
 

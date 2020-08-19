@@ -3,7 +3,7 @@ package ru.mozevil.controller;
 import ru.mozevil.controller.parser.TableParser;
 import ru.mozevil.controller.robot.RobotVM;
 import ru.mozevil.controller.strategy.SnG_45_simple;
-import ru.mozevil.controller.vm.VMoze;
+import ru.mozevil.controller.robot.vm.VMoze;
 import ru.mozevil.view.PokerView;
 
 import java.util.concurrent.Executors;

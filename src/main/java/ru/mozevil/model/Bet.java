@@ -1,15 +1,13 @@
 package ru.mozevil.model;
 
 public enum Bet {
-
-    NOTHING,
+    NULL,
     ALL_IN,
     POT_33,
     POT_50,
     POT_66,
     POT_75,
     POT_100,
-    BB_1,
     BB_2,
     BB_2_25,
     BB_2_5,
@@ -22,5 +20,5 @@ public enum Bet {
     BB_9,
     BB_10,
     BB_12,
-    BB_15,
+    BB_15
 }

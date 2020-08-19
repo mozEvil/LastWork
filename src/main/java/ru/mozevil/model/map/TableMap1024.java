@@ -1,15 +1,15 @@
-package ru.mozevil.model;
+package ru.mozevil.model.map;
 
-public enum TableMap {
+public enum TableMap1024 implements TableMap {
 
     // карманные карты
-    HAND_CARD_1(621, 470, 23, 30),//
-    HAND_CARD_2(685, 470, 23, 30),//
+    HAND_CARD_1(450, 470, 23, 30),//+
+    HAND_CARD_2(514, 470, 23, 30),//+
 
     // нужно ли делать ход
-    CAN_RAISE(1160, 720, 1, 1), //
-    CAN_CHECK_CALL(940, 720, 1, 1), //
-    CAN_FOLD(750, 720, 1, 1), //
+    CAN_RAISE(989, 720, 1, 1), //+
+    CAN_CHECK_CALL(769, 720, 1, 1), //+
+    CAN_FOLD(579, 720, 1, 1), //+
 
     // общие карты
     TABLE_CARD_1(526,268, 23, 30),//
@@ -83,25 +83,29 @@ public enum TableMap {
     private int w;
     private int h;
 
-    TableMap(int x, int y, int w, int h) {
+    TableMap1024(int x, int y, int w, int h) {
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
     }
 
+    @Override
     public int getX() {
         return x;
     }
 
+    @Override
     public int getY() {
         return y;
     }
 
+    @Override
     public int getW() {
         return w;
     }
 
+    @Override
     public int getH() {
         return h;
     }

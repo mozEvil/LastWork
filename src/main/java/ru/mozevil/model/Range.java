@@ -2,7 +2,7 @@ package ru.mozevil.model;
 
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-import ru.mozevil.controller.strategy.SnG_45_simple;
+import ru.mozevil.model.factory.HANDS;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

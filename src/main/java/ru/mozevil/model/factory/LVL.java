@@ -1,8 +1,10 @@
-package ru.mozevil.model;
+package ru.mozevil.model.factory;
 
-public class LVL_Factory {
+import ru.mozevil.model.Level;
 
-    public static Level getLVL_SnG_45() {
+public class LVL {
+
+    public static Level SnG_45_RealMoney() {
         Level lvl = new Level();
 
         lvl.addLevel(1, 0.15);
@@ -35,7 +37,7 @@ public class LVL_Factory {
         return lvl;
     }
 
-    public static Level getLVL_SnG_9_PlayMoney() {
+    public static Level SnG_9_PlayMoney() {
         Level lvl = new Level();
 
         lvl.addLevel(1, 0);

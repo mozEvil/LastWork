@@ -1,4 +1,9 @@
-package ru.mozevil.model;
+package ru.mozevil.model.factory;
+
+import ru.mozevil.model.Card;
+import ru.mozevil.model.Hand;
+import ru.mozevil.model.Rank;
+import ru.mozevil.model.Suit;
 
 import java.util.LinkedList;
 

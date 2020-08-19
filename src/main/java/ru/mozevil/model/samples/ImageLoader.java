@@ -1,10 +1,8 @@
-package ru.mozevil.controller.parser;
+package ru.mozevil.model.samples;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import ru.mozevil.controller.strategy.SnG_45_simple;
 import ru.mozevil.model.Card;
-import ru.mozevil.model.samples.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -20,13 +18,13 @@ public class ImageLoader {
 
     private BufferedImage sampleAction;
     private BufferedImage sampleActivePlayer;
-    private HashMap<Card, BufferedImage> samplesCardMap;
+    private HashMap<Card, BufferedImage> samplesCard;
     private BufferedImage[] samplesDealer;
     private BufferedImage[] samplesSeat;
 
     private ImageLoader() {
         loadActionSamples();
-        loadCardMapSamples();
+        loadCardSamples();
         loadDealerSamples();
         loadActivePlayerSamples();
         loadSeatSamples();
@@ -40,12 +38,12 @@ public class ImageLoader {
         }
     }
 
-    private void loadCardMapSamples() {
+    private void loadCardSamples() {
         try {
-            samplesCardMap = new HashMap<>();
+            samplesCard = new HashMap<>();
             for (SamplePathCard c : SamplePathCard.values()) {
                 BufferedImage image = ImageIO.read(new File(c.getFilePath()));
-                samplesCardMap.put(c.getCard(), image);
+                samplesCard.put(c.getCard(), image);
             }
         } catch (IOException e) {
             log.log(Level.ERROR,"ERROR LOAD CARD SAMPLES", e);
@@ -83,24 +81,24 @@ public class ImageLoader {
         }
     }
 
-    public BufferedImage getSampleAction() {
+    public BufferedImage Action() {
         return sampleAction;
     }
 
-    public BufferedImage[] getSamplesDealer() {
+    public BufferedImage[] Dealer() {
         return samplesDealer;
     }
 
-    public BufferedImage getSampleActivePlayer() {
+    public BufferedImage ActivePlayer() {
         return sampleActivePlayer;
     }
 
-    public BufferedImage[] getSamplesSeat() {
+    public BufferedImage[] Seat() {
         return samplesSeat;
     }
 
-    public HashMap<Card, BufferedImage> getSamplesCardMap() {
-        return samplesCardMap;
+    public HashMap<Card, BufferedImage> Card() {
+        return samplesCard;
     }
 
 }

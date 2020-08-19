@@ -2,6 +2,9 @@ package ru.mozevil.controller.strategy;
 
 import org.apache.log4j.Logger;
 import ru.mozevil.model.*;
+import ru.mozevil.model.factory.CHARTS;
+import ru.mozevil.model.factory.DF;
+import ru.mozevil.model.factory.LVL;
 import ru.mozevil.model.positions.Position;
 
 public class SnG_45_simple implements PokerStrategy {
@@ -10,11 +13,11 @@ public class SnG_45_simple implements PokerStrategy {
 
     private Environment env;
 
-//    private final Level lvl = LVL_Factory.getLVL_SnG_45();
-    private final Level lvl = LVL_Factory.getLVL_SnG_9_PlayMoney();
+//    private final Level lvl = LVL.SnG_45_RealMoney();
+    private final Level lvl = LVL.SnG_9_PlayMoney();
 
-    private final Chart chartNash_push_HU = ChartFactory.getChart_Nash_push_HU();
-    private final Chart chartNash_call_HU = ChartFactory.getChart_Nash_call_HU();
+    private final Chart chartNash_push_HU = CHARTS.Nash_Push_HU();
+    private final Chart chartNash_call_HU = CHARTS.Nash_Call_HU();
 
     // >= 11
     private final Range range_EP_open = new Range("TT+, AK");

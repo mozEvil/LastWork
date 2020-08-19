@@ -4,5 +4,5 @@ public enum Move {
     FOLD,
     CHECK,
     CALL,
-    RAISE,
+    RAISE
 }

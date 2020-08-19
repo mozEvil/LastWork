@@ -10,7 +10,7 @@ public class Decision {
 
     public Decision(Move move) {
         this.move = move;
-        this.value = Bet.NOTHING;
+        this.value = Bet.NULL;
     }
 
     public Decision(Move move, Bet value) {
@@ -36,9 +36,6 @@ public class Decision {
 
     @Override
     public String toString() {
-        String str1 = "" + move;
-        String str2 = " (" + value + ")";
-        if (value == Bet.NOTHING) return str1;
-        return str1 + str2;
+        return value == Bet.NULL ? move + "" : move + " (" + value + ")";
     }
 }

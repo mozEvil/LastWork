@@ -1,6 +1,9 @@
 package ru.mozevil.controller.parser;
 
+import ru.mozevil.controller.parser.cutter.Cutter;
+import ru.mozevil.controller.parser.cutter.TableCutter1024;
 import ru.mozevil.model.*;
+import ru.mozevil.model.factory.HANDS;
 import ru.mozevil.model.positions.*;
 
 import java.awt.image.BufferedImage;
@@ -10,8 +13,7 @@ public class TableParser implements PokerParser {
 
     private static final int MAX_TABLE_SIZE = 9;
 
-    private TableCutter cutter = new TableCutter();
-
+    private Cutter cutter = new TableCutter1024();
     private CompareParser parser = new CompareParser();
     private OCRParser ocr = new OCRParser();
 
@@ -40,11 +42,9 @@ public class TableParser implements PokerParser {
         for (int i = 1; i < MAX_TABLE_SIZE; i++) {
             // парсим пустые места за столом
             seats[i].setEmpty(parser.isEmptySeat(cutter.getSeatImg(i)));
-
             // парсим активность игроков
             seats[i].getPlayer().setActive(parser.isActivePlayer(cutter.getActivePlayerImg(i)));
         }
-
         // считаем количество игроков за столом, чтобы знать какой PositionAct использовать
         int countPlayers = (int) Arrays.stream(seats).filter(seat -> !seat.isEmpty()).count();
 
@@ -63,7 +63,6 @@ public class TableParser implements PokerParser {
                 seats[index].getPlayer().setAct(act);
             }
         }
-
         // парсим руку hero
         seats[0].getPlayer().setHand(getHand());
 
@@ -112,11 +111,9 @@ public class TableParser implements PokerParser {
      * 8 - справа от Hero
      * */
     private int getDealerSeatNumber() {
-
         for (int i = 0; i < MAX_TABLE_SIZE; i++) {
             if (parser.isDealer(cutter.getDealerImg(i))) return i;
         }
-
         return -1;
     }
 
@@ -135,24 +132,18 @@ public class TableParser implements PokerParser {
     }
 
     private int nextSeatIndex(int i) {
-        int nextIndex = i + 1;
-        if (nextIndex == MAX_TABLE_SIZE) nextIndex = 0;
-        return nextIndex;
+        return i + 1 == MAX_TABLE_SIZE ? 0 : i + 1;
     }
 
     private Hand getHand() {
-
         Card card1 = parser.parseCard(cutter.getHandCardImg(1));
         Card card2 = parser.parseCard(cutter.getHandCardImg(2));
 
-//        return new Hand(card1, card2);
         return HANDS.GET.hand(card1, card2);
     }
 
     private Card[] getTableCards() {
-
         Card[] cards = new Card[5];
-
         cards[0] = parser.parseCard(cutter.getTableCardImg(1));
         cards[1] = parser.parseCard(cutter.getTableCardImg(2));
         cards[2] = parser.parseCard(cutter.getTableCardImg(3));

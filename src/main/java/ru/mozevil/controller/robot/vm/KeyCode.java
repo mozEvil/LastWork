@@ -1,4 +1,4 @@
-package ru.mozevil.controller.vm;
+package ru.mozevil.controller.robot.vm;
 
 public class KeyCode {
 

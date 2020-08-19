@@ -1,7 +1,12 @@
-package ru.mozevil.model;
+package ru.mozevil.model.factory;
+
+import ru.mozevil.model.Bet;
+import ru.mozevil.model.Decision;
+import ru.mozevil.model.Move;
 
 /** Decision Factory*/
 public class DF {
+    private DF() {}
 
     public static Decision fold() {
         return new Decision();
@@ -59,18 +64,18 @@ public class DF {
     }
 
     public static Decision reraise(double maxBet, int countCallers) {
-        return new Decision(Move.RAISE, getBet(maxBet, countCallers));
+        return new Decision(Move.RAISE, getBetForReraise(maxBet, countCallers));
     }
 
-    private static Bet getBet(double betSize, int count) {
+    private static Bet getBetForReraise(double betSize, int count) {
         int reRaiseSize = (int) Math.round(betSize * (3 + count));
 
         switch (reRaiseSize) {
-            case 1 : return Bet.BB_1;
-            case 2 : return Bet.BB_2;
-            case 3 : return Bet.BB_3;
-            case 4 : return Bet.BB_4;
-            case 5 : return Bet.BB_5;
+            case 1 :
+            case 2 :
+            case 3 :
+            case 4 :
+            case 5 :
             case 6 : return Bet.BB_6;
             case 7 : return Bet.BB_7;
             case 8 : return Bet.BB_8;
