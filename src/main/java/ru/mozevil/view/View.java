@@ -21,8 +21,8 @@ public class View  extends JFrame implements PokerView {
 
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 //        setSize(700,550);
-//        setLocationRelativeTo(null);
-        setLocation(350, 50);
+        setLocationRelativeTo(null);
+//        setLocation(350, 50);
         setResizable(false);
 
         addWindowListener(new WindowAdapter() {

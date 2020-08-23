@@ -302,7 +302,7 @@ public class Environment {
         if (heroPos == Position.SB && heroBetSize > 0.5) heroWasBet = true;
         if (heroPos != Position.BB && heroPos != Position.SB && heroBetSize > 0) heroWasBet = true;
 
-        return heroWasBet;
+        return !heroWasBet;
     }
 
     public double getCallSize() {

@@ -19,15 +19,15 @@ public enum TableMap1024 implements TableMap {
     TABLE_CARD_5(615,267, 23, 30),//+
 
     // позиция дилера
-    DEALER_SEAT_0(599,455, 1, 10),//+
-    DEALER_SEAT_1(335,441, 1, 10),//+
-    DEALER_SEAT_2(199,295, 1, 10),//+
-    DEALER_SEAT_3(237,244, 1, 10),//+
-    DEALER_SEAT_4(372,183, 1, 10),//+
-    DEALER_SEAT_5(666,183, 1, 10),//+
-    DEALER_SEAT_6(788,244, 1, 10),//+
-    DEALER_SEAT_7(822,290, 1, 10),//+
-    DEALER_SEAT_8(703,432, 1, 10),//+
+    DEALER_SEAT_0(599,455, 1, 1),//+
+    DEALER_SEAT_1(335,441, 1, 1),//+
+    DEALER_SEAT_2(199,295, 1, 1),//+
+    DEALER_SEAT_3(237,244, 1, 1),//+
+    DEALER_SEAT_4(372,183, 1, 1),//+
+    DEALER_SEAT_5(666,183, 1, 1),//+
+    DEALER_SEAT_6(788,244, 1, 1),//+
+    DEALER_SEAT_7(822,290, 1, 1),//+
+    DEALER_SEAT_8(703,432, 1, 1),//+
 
     // количество активных игроков // SEAT_0 - HERO всегда актив
     ACTIVE_SEAT_1(223, 437, 1, 1),//+

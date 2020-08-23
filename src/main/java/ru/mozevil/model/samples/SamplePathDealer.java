@@ -10,8 +10,7 @@ public enum SamplePathDealer {
     SAMPLE_5("src\\main\\resources\\samples\\dealer\\d5.png"),
     SAMPLE_6("src\\main\\resources\\samples\\dealer\\d6.png"),
     SAMPLE_7("src\\main\\resources\\samples\\dealer\\d7.png"),
-    SAMPLE_8("src\\main\\resources\\samples\\dealer\\d8.png"),
-    SAMPLE_9("src\\main\\resources\\samples\\dealer\\d9.png");
+    SAMPLE_8("src\\main\\resources\\samples\\dealer\\d8.png");
 
     private final String filePath;
 
