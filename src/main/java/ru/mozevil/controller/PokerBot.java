@@ -53,15 +53,16 @@ public class PokerBot implements Runnable {
                 strategy.makeDecision(env);
 
                 // выполняем решение
-//                robot.makeMove(env);
+                robot.makeMove(env);
+
+        //показываем решение
+        if (view != null) {
+            view.update(env);
+        }
             }
         } catch (Exception e) {
             log.log(Level.ERROR, "BOT ERROR", e);
             env = null;
-        }
-
-        if (view != null) {
-            view.update(env);
         }
     }
 }

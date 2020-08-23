@@ -57,9 +57,13 @@ public class RobotVM implements PokerRobot {
 
     private boolean makeMove(Move move) {
         switch (move) {
-            case FOLD: return pressKey(KeyCode.PRESS_F);
+            case FOLD: { //pressKey(KeyCode.PRESS_X);  // check-fold // when multitabling can happen wrong press
+                return pressKey(KeyCode.PRESS_F);     // (press check on the one table and fold to another)
+            }
             case CHECK: return pressKey(KeyCode.PRESS_X);
-            case CALL: return pressKey(KeyCode.PRESS_C);
+            case CALL: { //pressKey(KeyCode.PRESS_X); // check-call
+                return pressKey(KeyCode.PRESS_C);
+            }
             case RAISE: return pressKey(KeyCode.PRESS_R);
             default: return true;
         }

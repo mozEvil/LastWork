@@ -94,7 +94,7 @@ public enum Card {
 
     @Override
     public String toString() {
-        return getName();
+        return rank.getName() + suit.getIcon();
     }
 
     public static Card getCard(Rank rank, Suit suit) {

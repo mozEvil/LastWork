@@ -305,6 +305,9 @@ public class SnG_45_simple implements PokerStrategy {
         // magic resteal
         if (range_resteal.containsHand(env.getHeroHand())) return DF.push();
 
+        if (env.getRealEffectiveStackSize() < 5
+                && range_EP_MP_openPush_5bb.containsHand(env.getHeroHand())) return DF.push();
+
         // в остальных случаях
         return DF.check_fold();
     }

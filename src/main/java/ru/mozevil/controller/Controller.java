@@ -16,6 +16,7 @@ public class Controller implements PokerController {
 
     private final VMoze vm;
     private final PokerBot bot;
+//    private final Grabber grabber;
 
     private ScheduledExecutorService executorService;
     private boolean isBotStarted;
@@ -30,6 +31,8 @@ public class Controller implements PokerController {
         bot.setParser(new TableParser());
         bot.setStrategy(new SnG_45_simple());
         bot.setView(view);
+
+//        grabber = new Grabber(vm);
     }
 
     @Override
@@ -43,6 +46,7 @@ public class Controller implements PokerController {
         vm.openSession();
         executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleWithFixedDelay(bot, 0, 1, TimeUnit.SECONDS);
+//        executorService.scheduleWithFixedDelay(grabber, 0, 1, TimeUnit.SECONDS);
         isBotStarted = true;
         if (view != null) {
             view.update(null);

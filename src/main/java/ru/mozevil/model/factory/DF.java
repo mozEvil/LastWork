@@ -8,6 +8,15 @@ import ru.mozevil.model.Move;
 public class DF {
     private DF() {}
 
+    public static Decision random() {
+        double rnd = 100 * Math.random();
+        if (rnd < 33) return check_fold();
+        if (rnd < 66) return check_call();
+
+        int bet = (int) (1 + Math.round(18 * Math.random()));
+        return new Decision(Move.RAISE, Bet.values()[bet]);
+    }
+
     public static Decision fold() {
         return new Decision();
     }

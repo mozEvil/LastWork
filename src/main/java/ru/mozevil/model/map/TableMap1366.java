@@ -78,10 +78,10 @@ public enum TableMap1366 implements TableMap {
     LVL(180, 673, 92, 11)//
     ;
 
-    private int x;
-    private int y;
-    private int w;
-    private int h;
+    private final int x;
+    private final int y;
+    private final int w;
+    private final int h;
 
     TableMap1366(int x, int y, int w, int h) {
         this.x = x;

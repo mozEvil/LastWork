@@ -25,7 +25,8 @@ public class ComboEvaluator {
 
 
     /** Возвращает самую сильную комбинацию, которую можно собрать из данных 5-7-ми карт*/
-    public static Combination getBestCombo(@NotNull Hand hand, @NotNull Card[] tableCards) {
+    public static Combination getBestCombo(Hand hand, Card[] tableCards) {
+        if (hand == null || tableCards == null) return null;
 
         pair = false;
         twoPairs = false;
