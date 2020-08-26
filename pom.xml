@@ -58,7 +58,7 @@
       <artifactId>tess4j</artifactId>
 <!--      <version>3.4.8</version>-->
 <!--      <version>4.2.1</version>-->
-      <version>4.5.1</version>
+      <version>4.5.2</version>
     </dependency>
 
   </dependencies>

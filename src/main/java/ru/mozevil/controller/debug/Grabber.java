@@ -1,4 +1,4 @@
-package ru.mozevil.controller;
+package ru.mozevil.controller.debug;
 
 import ru.mozevil.controller.parser.PokerParser;
 import ru.mozevil.controller.parser.TableParser;

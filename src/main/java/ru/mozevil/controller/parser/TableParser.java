@@ -75,20 +75,23 @@ public class TableParser implements PokerParser {
         boolean canFold = parser.isAction(cutter.getActionBtnImg(1));
 
         // парсим текущий уровень блаиндов
-        int lvl = ocr.parseLevel(cutter.getLvlImg());
+//        int lvl = ocr.parseLevel(cutter.getLvlImg());
+        int lvl = 1;
 
         // парсим размер банка
         double potSize = ocr.parsePot(cutter.getPotImg());
 
         for (int i = 0; i < MAX_TABLE_SIZE; i++) {
             if (!seats[i].isEmpty()) {
-                // парсим стеки всех игроков
+                // парсим стеки и ставки всех игроков
                 seats[i].getPlayer().setStackSize(ocr.parseStack(cutter.getStackSizeImg(i)));
+                seats[i].getPlayer().setBetSize(ocr.parseBet(cutter.getBetSizeImg(i)));
 
-                if (seats[i].getPlayer().isActive()) {
-                    // парсим ставки только активных игроков
-                    seats[i].getPlayer().setBetSize(ocr.parseBet(cutter.getBetSizeImg(i)));
-                }
+                // парсим стеки и ставки только активных игроков
+//                if (seats[i].getPlayer().isActive()) {
+//                    seats[i].getPlayer().setStackSize(ocr.parseStack(cutter.getStackSizeImg(i)));
+//                    seats[i].getPlayer().setBetSize(ocr.parseBet(cutter.getBetSizeImg(i)));
+//                }
             }
         }
 

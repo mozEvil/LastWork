@@ -22,7 +22,7 @@ public class Decision {
     public Decision(Move move, Bet value) {
         this.move = move;
         this.value = value;
-        log.debug(move + "-" + value +" : " + Arrays.toString(Thread.currentThread().getStackTrace()));
+//        log.debug(move + "-" + value +" : " + Arrays.toString(Thread.currentThread().getStackTrace()));
     }
 
     public Move getMove() {

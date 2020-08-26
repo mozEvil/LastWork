@@ -120,36 +120,39 @@ public class GamePanel extends JPanel {
 
         if (env != null) {
             Seat[] seats = env.getSeats();
-            if (!seats[0].isEmpty()) paintPlayer(300, 400, seats[0].getPlayer(), g2d);
-            else paintPlayer(300, 400, null, g2d);
-            if (!seats[1].isEmpty()) paintPlayer(160, 350, seats[1].getPlayer(), g2d);
-            else paintPlayer(160, 350, null, g2d);
-            if (!seats[2].isEmpty()) paintPlayer(40, 250, seats[2].getPlayer(), g2d);
-            else paintPlayer(40, 250, null, g2d);
-            if (!seats[3].isEmpty()) paintPlayer(110, 120, seats[3].getPlayer(), g2d);
-            else paintPlayer(110, 120, null, g2d);
-            if (!seats[4].isEmpty()) paintPlayer(240, 60, seats[4].getPlayer(), g2d);
-            else paintPlayer(240, 60, null, g2d);
-            if (!seats[5].isEmpty()) paintPlayer(360, 60, seats[5].getPlayer(), g2d);
-            else paintPlayer(360, 60, null, g2d);
-            if (!seats[6].isEmpty()) paintPlayer(490, 120, seats[6].getPlayer(), g2d);
-            else paintPlayer(490, 120, null, g2d);
-            if (!seats[7].isEmpty()) paintPlayer(560, 250, seats[7].getPlayer(), g2d);
-            else paintPlayer(560, 250, null, g2d);
-            if (!seats[8].isEmpty()) paintPlayer(440, 350, seats[8].getPlayer(), g2d);
-            else paintPlayer(440, 350, null, g2d);
+            if (!seats[0].isEmpty()) paintPlayer(308, 430, seats[0].getPlayer(), g2d);
+            else paintPlayer(308, 400, null, g2d);
+
+            if (!seats[1].isEmpty()) paintPlayer(168, 380, seats[1].getPlayer(), g2d);
+            else paintPlayer(168, 380, null, g2d);
+            if (!seats[2].isEmpty()) paintPlayer(48, 280, seats[2].getPlayer(), g2d);
+            else paintPlayer(48, 280, null, g2d);
+            if (!seats[3].isEmpty()) paintPlayer(110, 140, seats[3].getPlayer(), g2d);
+            else paintPlayer(110, 140, null, g2d);
+
+            if (!seats[4].isEmpty()) paintPlayer(245, 80, seats[4].getPlayer(), g2d);
+            else paintPlayer(245, 80, null, g2d);
+            if (!seats[5].isEmpty()) paintPlayer(373, 80, seats[5].getPlayer(), g2d);
+            else paintPlayer(373, 80, null, g2d);
+
+            if (!seats[6].isEmpty()) paintPlayer(505, 140, seats[6].getPlayer(), g2d);
+            else paintPlayer(505, 140, null, g2d);
+            if (!seats[7].isEmpty()) paintPlayer(568, 280, seats[7].getPlayer(), g2d);
+            else paintPlayer(568, 280, null, g2d);
+            if (!seats[8].isEmpty()) paintPlayer(448, 380, seats[8].getPlayer(), g2d);
+            else paintPlayer(448, 380, null, g2d);
 
             // карты стола
             for (int i = 0; i < 5; i++) {
                 Card card = env.getTableCards()[i];
-                paintCard(235 + (i * 42), 180, card, g2d);
+                paintCard(243 + (i * 42), 200, card, g2d);
             }
             // банк
-            paintText(290, 140, "Pot: " + env.getPotSize(), 100, g2d);
+            paintText(298, 160, "Pot: " + env.getPotSize(), 100, g2d);
             // решение
-            paintText(280, 280, "" + env.getDecision(), 130, g2d);
+            paintText(288, 300, "" + env.getDecision(), 130, g2d);
             // лучшее комбо
-            paintCombo(5, 445, env.getBestCombo(), g2d);
+            paintCombo(5, 480, env.getBestCombo(), g2d);
         }
 
         g2d.dispose();
@@ -196,6 +199,7 @@ public class GamePanel extends JPanel {
             return;
         }
 
+        Graphics2D copy = (Graphics2D) g2d.create();
         Rectangle bounds = new Rectangle(x, y, 40, 50);
 
         int fix = 0;
@@ -208,17 +212,16 @@ public class GamePanel extends JPanel {
         Color hearts = new Color(161, 19, 19);
 
         switch (card.getSuit()){
-            case CLUBS: g2d.setColor(clubs); fix = -1; break;
-            case DIAMONDS: g2d.setColor(diamonds); fix = 2; break;
-            case SPADES: g2d.setColor(spades); fix = 2; break;
-            case HEARTS: g2d.setColor(hearts); break;
+            case CLUBS: copy.setColor(clubs); fix = -1; break;
+            case DIAMONDS: copy.setColor(diamonds); fix = 2; break;
+            case SPADES: copy.setColor(spades); fix = 2; break;
+            case HEARTS: copy.setColor(hearts); break;
         }
 
-        g2d.fill(bounds);
-        g2d.setColor(Color.black);
-        g2d.draw(bounds);
+        copy.fill(bounds);
+        copy.setColor(Color.black);
+        copy.draw(bounds);
 
-        Graphics2D copy = (Graphics2D) g2d.create();
         copy.translate(bounds.x + 5, bounds.y + 5);
         String rank = card.getRank().getName();
         String suit = card.getSuit().getIcon();
@@ -235,6 +238,7 @@ public class GamePanel extends JPanel {
     }
 
     private void paintUnknownCard(int x, int y, Graphics2D g2d) {
+        Graphics2D copy = (Graphics2D) g2d.create();
         Rectangle bounds = new Rectangle(x, y, 40, 50);
         Rectangle inside = new Rectangle(x+5, y+5, 30, 40);
 
@@ -242,37 +246,40 @@ public class GamePanel extends JPanel {
         Color ins = new Color(208, 160, 20);
         Color romb = new Color(146, 8, 8);
 
-        g2d.setColor(ins);
-        g2d.fill(bounds);
+        copy.setColor(ins);
+        copy.fill(bounds);
 
-        g2d.setColor(shirt);
-        g2d.fill(inside);
+        copy.setColor(shirt);
+        copy.fill(inside);
 
-        g2d.setColor(Color.black);
-        g2d.draw(bounds);
-        g2d.draw(inside);
+        copy.setColor(Color.black);
+        copy.draw(bounds);
+        copy.draw(inside);
 
-        g2d.setColor(romb);
-        g2d.drawLine(x + 6, y + 6, x + 34,  y + 44);
-        g2d.drawLine(x + 15, y + 6, x + 34,  y + 31);
-        g2d.drawLine(x + 25, y + 6, x + 34,  y + 18);
-        g2d.drawLine(x + 34, y + 6, x + 6,  y + 44);
-        g2d.drawLine(x + 25, y + 6, x + 6,  y + 31);
-        g2d.drawLine(x + 15, y + 6, x + 6,  y + 18);
-        g2d.drawLine(x + 6, y + 18, x + 25,  y + 44);
-        g2d.drawLine(x + 6, y + 31, x + 15,  y + 44);
-        g2d.drawLine(x + 34, y + 18, x + 15,  y + 44);
-        g2d.drawLine(x + 34, y + 31, x + 25,  y + 44);
+        copy.setColor(romb);
+        copy.drawLine(x + 6, y + 6, x + 34,  y + 44);
+        copy.drawLine(x + 15, y + 6, x + 34,  y + 31);
+        copy.drawLine(x + 25, y + 6, x + 34,  y + 18);
+        copy.drawLine(x + 34, y + 6, x + 6,  y + 44);
+        copy.drawLine(x + 25, y + 6, x + 6,  y + 31);
+        copy.drawLine(x + 15, y + 6, x + 6,  y + 18);
+        copy.drawLine(x + 6, y + 18, x + 25,  y + 44);
+        copy.drawLine(x + 6, y + 31, x + 15,  y + 44);
+        copy.drawLine(x + 34, y + 18, x + 15,  y + 44);
+        copy.drawLine(x + 34, y + 31, x + 25,  y + 44);
+
+        copy.dispose();
     }
 
     private void paintText(int x, int y, String text, int width, Graphics2D g2d) {
-        Rectangle bounds = new Rectangle(x, y, width, 20);
-        g2d.setColor(Color.white);
-        g2d.fill(bounds);
-        g2d.setColor(Color.black);
-        g2d.draw(bounds);
-
         Graphics2D copy = (Graphics2D) g2d.create();
+        Rectangle bounds = new Rectangle(x, y, width, 20);
+
+        copy.setColor(Color.white);
+        copy.fill(bounds);
+        copy.setColor(Color.black);
+        copy.draw(bounds);
+
         copy.translate(bounds.x + (width >> 1) - text.length()*3.7, bounds.y + 15);
 
         Font font = new Font("Arial", Font.BOLD, 14);
@@ -285,13 +292,14 @@ public class GamePanel extends JPanel {
     }
 
     private void paintTextGray(int x, int y, String text, int width, Graphics2D g2d) {
-        Rectangle bounds = new Rectangle(x, y, width, 20);
-        g2d.setColor(Color.GRAY);
-        g2d.fill(bounds);
-        g2d.setColor(Color.black);
-        g2d.draw(bounds);
-
         Graphics2D copy = (Graphics2D) g2d.create();
+        Rectangle bounds = new Rectangle(x, y, width, 20);
+
+        copy.setColor(Color.GRAY);
+        copy.fill(bounds);
+        copy.setColor(Color.black);
+        copy.draw(bounds);
+
         copy.translate(bounds.x + (width >> 1) - text.length()*3.3, bounds.y + 15);
 
         Font font = new Font("Arial", Font.BOLD, 14);
@@ -300,7 +308,6 @@ public class GamePanel extends JPanel {
         copy.drawString(text, 0, 0);
 
         copy.dispose();
-
     }
 
     private void paintCombo(int x, int y, Combination combo, Graphics2D g2d) {
@@ -324,35 +331,36 @@ public class GamePanel extends JPanel {
         int h = Math.abs(stop.y - start.y) + start.height + pad;
         Rectangle block = new Rectangle(start.x - pad, start.y - pad, w + pad, h + pad);
 
-        g2d.setColor(Color.BLACK);
-        g2d.draw(block);
+        Graphics2D copy = (Graphics2D) g2d.create();
+        copy.setColor(Color.BLACK);
+        copy.draw(block);
 
         if (isStarted) {
             Font fontStop = new Font("Arial", Font.BOLD, 40);
-            g2d.setFont(fontStop);
-            g2d.translate(stop.x - 3, stop.y + 19 );
-            g2d.setColor(Color.BLACK);
-            g2d.drawString("■", 1, 1);
-            g2d.drawString("■", -1, -1);
-            g2d.drawString("■", 1, -1);
-            g2d.drawString("■", -1, 1);
-            g2d.setColor(Color.RED);
-            g2d.drawString("■", 0, 0);
+            copy.setFont(fontStop);
+            copy.translate(stop.x - 3, stop.y + 19 );
+            copy.setColor(Color.BLACK);
+            copy.drawString("■", 1, 1);
+            copy.drawString("■", -1, -1);
+            copy.drawString("■", 1, -1);
+            copy.drawString("■", -1, 1);
+            copy.setColor(Color.RED);
+            copy.drawString("■", 0, 0);
 
         } else {
             Font fontStart = new Font("Arial", Font.BOLD, 28);
-            g2d.setFont(fontStart);
-            g2d.translate(start.x - 3, start.y + 19);
-            g2d.setColor(Color.BLACK);
-            g2d.drawString("►", 1, 1);
-            g2d.drawString("►", -1, -1);
-            g2d.drawString("►", 1, -1);
-            g2d.drawString("►", -1, 1);
-            g2d.setColor(Color.GREEN);
-            g2d.drawString("►", 0, 0);
+            copy.setFont(fontStart);
+            copy.translate(start.x - 3, start.y + 19);
+            copy.setColor(Color.BLACK);
+            copy.drawString("►", 1, 1);
+            copy.drawString("►", -1, -1);
+            copy.drawString("►", 1, -1);
+            copy.drawString("►", -1, 1);
+            copy.setColor(Color.GREEN);
+            copy.drawString("►", 0, 0);
 
         }
-
+        copy.dispose();
     }
 
 }

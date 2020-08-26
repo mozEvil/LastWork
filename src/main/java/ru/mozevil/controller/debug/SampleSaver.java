@@ -1,4 +1,4 @@
-package ru.mozevil.controller;
+package ru.mozevil.controller.debug;
 
 import ru.mozevil.controller.parser.cutter.Cutter;
 import ru.mozevil.controller.parser.cutter.TableCutter1024;

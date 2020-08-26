@@ -20,10 +20,10 @@ public class View  extends JFrame implements PokerView {
         gamePanel = new GamePanel(controller);
 
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-//        setSize(700,550);
-        setLocationRelativeTo(null);
-//        setLocation(350, 50);
-        setResizable(false);
+//        setSize(800,500);
+//        setLocationRelativeTo(null);
+        setLocation(350, 50);
+//        setResizable(false);
 
         addWindowListener(new WindowAdapter() {
             @Override
