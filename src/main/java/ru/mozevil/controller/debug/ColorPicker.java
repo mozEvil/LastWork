@@ -7,9 +7,11 @@ public class ColorPicker {
     public static void main(String[] args) {
 
 //        int argb = 0x014E19;
-        int argb = 0x01501A;
+        int argb = 0x014C18;
+        int col = -16689893;
 
         Color c = new Color(argb);
+        Color c2 = new Color(col);
         System.out.println(c.getRGB());
 
 

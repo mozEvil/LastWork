@@ -2,7 +2,6 @@ package ru.mozevil.controller.parser;
 
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
-import net.sourceforge.tess4j.util.ImageHelper;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import ru.mozevil.controller.debug.DebugSaver;
@@ -22,7 +21,8 @@ public class OCRParser {
         tesseract = new Tesseract();
         tesseract.setDatapath("src\\main\\resources\\tessdata");
         tesseract.setTessVariable("user_defined_dpi", "96");
-        tesseract.setTessVariable("tessedit_char_whitelist", "0123456789.B Pot:NextLvlSingOuAIDscd-");
+        tesseract.setTessVariable("tessedit_char_whitelist", "0123456789,.B Pot:NextLvlSingOuAIDscd-");
+//        tesseract.setTessVariable("tessedit_char_blacklist", ",");
 //        tesseract.setTessVariable("tessedit_char_blacklist", "èéìà§ùòç$£&%éÎÉÈ");
         tesseract.setPageSegMode(10);
 //        tesseract.setTessVariable("tessedit_char_whitelist", "0123456789.B");
@@ -58,50 +58,56 @@ public class OCRParser {
     }
 
     public double parseStack(BufferedImage image) {
-        tesseract.setTessVariable("tessedit_char_whitelist", "0123456789.B"
+        tesseract.setTessVariable("tessedit_char_whitelist", "0123456789,.B"
                 + "All-In" + "Sitting Out" + "Disconnected" );
 //        BufferedImage buf = ImageHelper.convertImageToBinary(ImageHelper.invertImageColor(image));
         BufferedImage buf = getImgReadyForOCR(image);
         BufferedImage cut = cutImg(buf);
-        String result = parseString(cut).replace("B", "").trim();
+        String result = parseString(cut)
+                .replace("B", "")
+                .replace(",", "")
+                .trim();
 
         if (result.contains("All-In")) return 0;
         if (result.contains("Sitting Out")) return -1;
         if (result.contains("Disconnected")) return -1;
 
-        double stack;
-
         try {
-            stack = Double.parseDouble(result);
+            return Double.parseDouble(result);
 
         } catch (Exception ignored) {
             buf = getInactiveStackImgReadyForOCR(image);
             cut = cutImg(buf);
-            result = parseString(cut).replace("B", "").trim();;
+            result = parseString(cut)
+                    .replace("B", "")
+                    .replace(",", "")
+                    .trim();;
 
             if (result.contains("All-In")) return 0;
             if (result.contains("Sitting Out")) return -1;
             if (result.contains("Disconnected")) return -1;
 
             try {
-                stack = Double.parseDouble(result);
+                return Double.parseDouble(result);
 
             } catch (Exception e) {
                 log.log(Level.ERROR,"ERROR PARSE STACK", e);
-                stack = -2;
                 ds.save(image);
+                return -2;
             }
         }
-        return stack;
     }
 
     public double parseBet(BufferedImage image) {
         if (image == null) return 0.0;
-        tesseract.setTessVariable("tessedit_char_whitelist", "0123456789.B");
+        tesseract.setTessVariable("tessedit_char_whitelist", "0123456789,.B");
 //        BufferedImage buf = ImageHelper.convertImageToBinary(ImageHelper.invertImageColor(image));
         BufferedImage buf = getImgReadyForOCR(image);
         BufferedImage cut = cutImg(buf);
-        String result = parseString(cut).replace("B", "").trim();
+        String result = parseString(cut)
+                .replace("B", "")
+                .replace(",", "")
+                .trim();
         double bet = 0;
         if (result.length() > 0) {
             try {
@@ -117,12 +123,13 @@ public class OCRParser {
     }
 
     public double parsePot(BufferedImage image) {
-        tesseract.setTessVariable("tessedit_char_whitelist", "0123456789.B Pot:");
+        tesseract.setTessVariable("tessedit_char_whitelist", "0123456789,.B Pot:");
 //        BufferedImage buf = ImageHelper.convertImageToBinary(ImageHelper.invertImageColor(image));
         BufferedImage buf = getImgReadyForOCR(image);
         String result = parseString(buf)
                 .replace("Pot:", "")
                 .replace("B", "")
+                .replace(",", "")
                 .trim();
 
         double value = 0;
@@ -159,6 +166,19 @@ public class OCRParser {
         return -1;
     }
 
+    private boolean imageCompare(BufferedImage image1, BufferedImage image2) {
+        if (image1 == null || image2 == null) return false;
+        if (image1.getWidth() != image2.getWidth()) return false;
+        if (image1.getHeight() != image2.getHeight()) return false;
+
+        for (int x = 0; x < image1.getWidth(); x++) {
+            for (int y = 0; y < image1.getHeight(); y++) {
+                if (image1.getRGB(x, y) != image2.getRGB(x, y)) return false;
+            }
+        }
+        return true;
+    }
+
     /** обрезает черно-белую картинку по черным пикселям слева и справа*/
     public BufferedImage cutImg(BufferedImage image) {
         for (int x = 0; x < image.getWidth(); x++) {
@@ -180,19 +200,6 @@ public class OCRParser {
             }
         }
         return image;
-    }
-
-    private boolean imageCompare(BufferedImage image1, BufferedImage image2) {
-        if (image1 == null || image2 == null) return false;
-        if (image1.getWidth() != image2.getWidth()) return false;
-        if (image1.getHeight() != image2.getHeight()) return false;
-
-        for (int x = 0; x < image1.getWidth(); x++) {
-            for (int y = 0; y < image1.getHeight(); y++) {
-                if (image1.getRGB(x, y) != image2.getRGB(x, y)) return false;
-            }
-        }
-        return true;
     }
 
     public BufferedImage getInactiveStackImgReadyForOCR(BufferedImage image) {
@@ -228,9 +235,9 @@ public class OCRParser {
         return grayscale;
     }
 
-    /** конвертирует изображенеи в бинарное черно-белое*/
+    /** конвертирует изображение в бинарное черно-белое и добавляет 10 пикселей снизу для лучшего распознования*/
     public BufferedImage convertToBinary(BufferedImage colorImage) {
-        BufferedImage blackWhite = new BufferedImage(colorImage.getWidth(), colorImage.getHeight(), BufferedImage.TYPE_BYTE_BINARY);
+        BufferedImage blackWhite = new BufferedImage(colorImage.getWidth(), colorImage.getHeight()+10, BufferedImage.TYPE_BYTE_BINARY);
         Graphics2D g2d = blackWhite.createGraphics();
         g2d.drawImage(colorImage, 0, 0, null);
         g2d.dispose();
@@ -238,10 +245,9 @@ public class OCRParser {
         return blackWhite;
     }
 
-    /** инвертирует черный и белый цвета */
+    /** инвертирует только черный и белый цвета */
     public BufferedImage invertBlackAndWhite(BufferedImage image) {
-        BufferedImage imageOut = getBlackImage(image.getWidth(),
-                image.getHeight());
+        BufferedImage imageOut = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_BINARY);
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
                 Color c = new Color(image.getRGB(i, j));
@@ -260,17 +266,6 @@ public class OCRParser {
             }
         }
         return imageOut;
-    }
-
-    private BufferedImage getBlackImage(int width, int height) {
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
-        for (int i = 0; i < width - 1; i++) {
-            for (int j = 0; j < height - 1; j++) {
-                image.setRGB(i, j, Color.black.getRGB());
-            }
-        }
-        return image;
     }
 
 }

@@ -14,17 +14,19 @@ public class DebugOCR {
 
         String path = "C:\\git_repo\\SomePro\\src\\main\\resources\\debug\\ocr\\";
 
-        String name = "test1";
+        String name = "_1";
 
         OCRParser ocr = new OCRParser();
         BufferedImage in = ImageIO.read(new File(path + name + ".png"));
-
+//        ImageIO.write(ImageHelper.convertImageToBinary(ImageHelper.invertImageColor(in)),
+//               "png" , new File(path + "_1.png"));
+//        ImageIO.write(ocr.cutImg(ocr.getImgReadyForOCR(in)),"png" , new File(path + "_1.png"));
 
         System.out.print("String: " + ocr.parseString(in));
         System.out.print("ImageHelper: " + ocr.parseString(ImageHelper.convertImageToBinary(ImageHelper.invertImageColor(in))));
         System.out.print("Ready: " + ocr.parseString(ocr.cutImg(ocr.getImgReadyForOCR(in))));
         System.out.print("inactive: " + ocr.parseString(ocr.cutImg(ocr.getInactiveStackImgReadyForOCR(in))));
-        System.out.print("Parse: " + ocr.parseStack(in));
+//        System.out.print("Parse: " + ocr.parseBet(in));
 
     }
 }

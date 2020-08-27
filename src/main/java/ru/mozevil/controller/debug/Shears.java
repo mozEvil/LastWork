@@ -12,17 +12,18 @@ import java.io.IOException;
 public class Shears {
 
     public static void main(String[] args) throws IOException {
-        String path = "C:\\git_repo\\SomePro\\src\\main\\resources\\debug\\";
+        String path = "src\\main\\resources\\debug\\1\\";
 
-        String name = "14";
+        String name = "44";
 
-        OCRParser ocr = new OCRParser();
+//        OCRParser ocr = new OCRParser();
         BufferedImage in = ImageIO.read(new File(path + name + ".png"));
 
         Cutter cutter = new TableCutter1024();
         cutter.setImageTable(in);
 
-        ImageIO.write(cutter.getBetSizeImg(4), "png", new File(path + "_5" + ".png"));
+        ImageIO.write(cutter.getBetSizeImg(3), "png",
+                new File("src\\main\\resources\\debug\\ocr\\_1" + ".png"));
 
 //        for (int i = 0; i < 9; i++) {
 //            ImageIO.write(cutter.getBetSizeImg(i), "png", new File(path + name + "_" + i + ".png"));

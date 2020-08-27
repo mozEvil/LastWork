@@ -75,8 +75,8 @@ public class TableParser implements PokerParser {
         boolean canFold = parser.isAction(cutter.getActionBtnImg(1));
 
         // парсим текущий уровень блаиндов
-//        int lvl = ocr.parseLevel(cutter.getLvlImg());
-        int lvl = 1;
+        int lvl = ocr.parseLevel(cutter.getLvlImg());
+//        int lvl = 1;
 
         // парсим размер банка
         double potSize = ocr.parsePot(cutter.getPotImg());

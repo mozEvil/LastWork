@@ -148,7 +148,7 @@ public class GamePanel extends JPanel {
                 paintCard(243 + (i * 42), 200, card, g2d);
             }
             // банк
-            paintText(298, 160, "Pot: " + env.getPotSize(), 100, g2d);
+            paintText(298, 160, env.getPotSize() == -2 ? "Error" : "Pot: " + env.getPotSize(), 100, g2d);
             // решение
             paintText(288, 300, "" + env.getDecision(), 130, g2d);
             // лучшее комбо
@@ -173,8 +173,14 @@ public class GamePanel extends JPanel {
             paintTextGray(x, y, "", 82, g2d);
             paintTextGray(x, y + 20, "", 82, g2d);
         } else {
-            paintText(x, y - 20, "Bet: " + player.getBetSize(), 82, g2d);
-            paintText(x, y, "" + player.getStackSize(), 82, g2d);
+            String stack =  player.getStackSize() ==  0 ? "All-In"  :
+                            player.getStackSize() == -1 ? "Sit Out" :
+                            player.getStackSize() == -2 ? "Error" : "" + player.getStackSize();
+            String bet = player.getBetSize() > 0 ? "Bet: " + player.getBetSize() :
+                         player.getBetSize() == -2 ? "Error" : "";
+
+            paintText(x, y - 20, bet, 82, g2d);
+            paintText(x, y, stack, 82, g2d);
             paintText(x, y + 20, "" + player.getPosition(), 82, g2d);
             if (player.isActive()) {
                 paintHand(x, y - 70, player.getHand(), g2d);
