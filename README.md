@@ -1,2 +1,2 @@
 # SomePro
-Recognition by OCR and compare pixels.
+Parsing poker table by OCR recognition and compare pixels. Interaction through VirtualBox.
