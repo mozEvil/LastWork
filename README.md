@@ -1,5 +1,5 @@
 # SomePro
-Auto player to online poker. Parsing poker table by OCR recognition and compare pixels. Interaction through VirtualBox.
+Auto player to online Texas Holdem poker. Parsing poker table by OCR recognition and compare pixels. Interaction through VirtualBox.
 
 **Перед запуском программы необходимо:**
 - на компьютер установить Virtual Box и любую вирт.машину (я тестировал на Win7).
